@@ -1,0 +1,22 @@
+{
+  "name": "learning-kafka-nodejs",
+  "version": "1.0.0",
+  "description": "A project to explore Kafka integration with Node.js applications, including producing and consuming messages.",
+  "main": "index.js",
+  "scripts": {
+    "start:producer": "npx ts-node ./src/producers/index.ts",
+    "start:consumer": "npx ts-node ./src/consumers/index.ts",
+    "init:kafka": "npx ts-node ./src/client.ts",
+    "start": "docker-compose up -d docker-compose.yml"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  },
+  "devDependencies": {
+    "node`": "link:@types/node`",
+    "typescript": "^5.5.3"
+  }
+}
