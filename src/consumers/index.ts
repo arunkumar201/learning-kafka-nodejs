@@ -1,25 +1,20 @@
-import { kafkaClient } from "../client";
+import { kafkaClient } from "../config/kafka.config";
 
 const init = async () => {
-	const consumer = kafkaClient.consumer({ groupId: "group-1" });
-	console.log("Connecting Consumer...");
-	await consumer.connect();
-	console.log("Consumer Connected");
-
-	await consumer.subscribe({
-		topic: "deliver-tracker",fromBeginning: true
-	});
-
-
-	await consumer.run({
-		eachMessage: async ({ topic,partition,message }) => {
-			console.log(`
-			topic Name : ${topic}
-			Partition: ${partition}
-			Message Offset: ${message.offset}
-			Message Key: ${message.key}
-			Message value: ${message.value}`);
-		},
-	});
+	try {
+		await kafkaClient.connect();
+		await kafkaClient.createTopic("deliver-tracker");
+		console.log("Connected to Kafka");
+	} catch (error) {
+		console.error("Failed to connect to Kafka:", error);
+		process.exit(1);
+	}
 };
+
+process.on("SIGINT", async () => {
+	await kafkaClient.disconnect();
+	console.log("Kafka connection closed");
+	process.exit(0);
+});
+
 init();
